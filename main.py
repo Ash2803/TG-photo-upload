@@ -6,7 +6,7 @@ def file_download(filename, url):
     response = requests.get(url)
     response.raise_for_status()
     Path('images').mkdir(parents=True, exist_ok=True)
-    with open(filename, 'wb') as file:
+    with open(f'images/{filename}', 'wb') as file:
         file.write(response.content)
 
 
