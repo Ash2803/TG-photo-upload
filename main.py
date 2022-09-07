@@ -1,5 +1,8 @@
+import os
+
 import requests
 from pathlib import Path
+from dotenv import load_dotenv
 
 
 def file_download(path, url):
@@ -24,12 +27,25 @@ def fetch_spacex_last_launch(launch_id, path):
             file.write(image.content)
 
 
+def get_nasa_photo(token, nasa_url):
+    payload = {
+        'api_key': token
+    }
+    response = requests.get(nasa_url, params=payload)
+    response.raise_for_status()
+    return response.json()['hdurl']
+
+
 def main():
     # url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
     # file_download(path, url)
-    launch_id = input('Enter launch id: ')
-    path = input('Enter download path: ')
-    fetch_spacex_last_launch(launch_id, path)
+    # launch_id = input('Enter launch id: ')
+    # path = input('Enter download path: ')
+    # fetch_spacex_last_launch(launch_id, path)
+    load_dotenv()
+    nasa_url = input('Enter url: ')
+    nasa_apikey = os.getenv('NASA_API_KEY')
+    print(get_nasa_photo(nasa_apikey, nasa_url))
 
 
 if __name__ == '__main__':
