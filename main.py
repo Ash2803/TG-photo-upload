@@ -1,5 +1,5 @@
 import os
-
+import urllib.parse
 import requests
 from pathlib import Path
 from dotenv import load_dotenv
@@ -36,6 +36,11 @@ def get_nasa_photo(token, nasa_url):
     return response.json()['hdurl']
 
 
+def refactoring_nasa_photo(photo_url):
+    url_split = urllib.parse.urlsplit(photo_url)
+    return url_split
+
+
 def main():
     # url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
     # file_download(path, url)
@@ -45,8 +50,8 @@ def main():
     load_dotenv()
     nasa_url = input('Enter url: ')
     nasa_apikey = os.getenv('NASA_API_KEY')
-    print(get_nasa_photo(nasa_apikey, nasa_url))
-
+    nasa_photo_url = get_nasa_photo(nasa_apikey, nasa_url)
+    print(refactoring_nasa_photo(nasa_photo_url))
 
 if __name__ == '__main__':
     main()
