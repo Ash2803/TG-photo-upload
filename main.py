@@ -28,17 +28,24 @@ def fetch_spacex_last_launch(launch_id, path):
 
 
 def get_nasa_photo(token, nasa_url):
+    links = []
     payload = {
-        'api_key': token
+        'api_key': token,
+        'count': '40'
     }
     response = requests.get(nasa_url, params=payload)
     response.raise_for_status()
-    return response.json()['hdurl']
+    for link in response.json():
+        links += link['hdurl']
+    return links
 
 
 def refactoring_nasa_photo(photo_url):
     url_split = urllib.parse.urlsplit(photo_url)
-    return url_split
+    domain_split = urllib.parse.unquote(url_split[2])
+    get_file_format = os.path.splitext(domain_split)
+    return get_file_format[1]
+    # return url_split
 
 
 def main():
@@ -51,7 +58,9 @@ def main():
     nasa_url = input('Enter url: ')
     nasa_apikey = os.getenv('NASA_API_KEY')
     nasa_photo_url = get_nasa_photo(nasa_apikey, nasa_url)
-    print(refactoring_nasa_photo(nasa_photo_url))
+    print(nasa_photo_url)
+    # print(refactoring_nasa_photo(nasa_photo_url))
+
 
 if __name__ == '__main__':
     main()
