@@ -36,7 +36,7 @@ def get_nasa_photo(token, nasa_url):
     response = requests.get(nasa_url, params=payload)
     response.raise_for_status()
     for link in response.json():
-        links += link['hdurl']
+        links.append(link['url'])
     return links
 
 
