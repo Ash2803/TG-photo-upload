@@ -47,24 +47,21 @@ def download_nasa_photo(token, nasa_url, path):
 
 
 def get_epic_nasa(url, token, path):
-    links = []
     param = {
         'api_key': token
     }
     response = requests.get(url, params=param)
     response.raise_for_status()
     Path(path).mkdir(parents=True, exist_ok=True)
-    for info in response.json():
-        image_name = info['image']
-        image_date = info['date'].split(" ")[0].replace('-', '/')
+    for link_number, link in enumerate(response.json(), start=1):
+        image_name = link['image']
+        image_date = link['date'].split(" ")[0].replace('-', '/')
         image_url = f'https://api.nasa.gov/EPIC/archive/natural/{image_date}/png/{image_name}.png?api_key={token}'
-        links.append(image_url)
-        for link_number, link in enumerate(links):
-            image = requests.get(link)
-            image.raise_for_status()
-            file_format = get_format(link)
-            with open(f'{path}/nasa_epic_photo{link_number}{file_format}', 'wb') as file:
-                file.write(image.content)
+        file_format = get_format(image_url)
+        image = requests.get(image_url)
+        image.raise_for_status()
+        with open(f'{path}/nasa_epic_photo{link_number}{file_format}', 'wb') as file:
+            file.write(image.content)
 
 
 def get_format(photo_url):
