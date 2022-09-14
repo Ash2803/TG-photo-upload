@@ -27,7 +27,8 @@ def fetch_spacex_last_launch(launch_id, path):
             file.write(image.content)
 
 
-def get_nasa_photo(token, nasa_url, path):
+def download_nasa_photo(token, nasa_url, path):
+    """Getting photo urls and downloading"""
     param = {
         'api_key': token,
         'count': '40'
@@ -45,13 +46,33 @@ def get_nasa_photo(token, nasa_url, path):
             file.write(image.content)
 
 
+def get_epic_nasa(url, token, path):
+    links = []
+    param = {
+        'api_key': token
+    }
+    response = requests.get(url, params=param)
+    response.raise_for_status()
+    Path(path).mkdir(parents=True, exist_ok=True)
+    for info in response.json():
+        image_name = info['image']
+        image_date = info['date'].split(" ")[0].replace('-', '/')
+        image_url = f'https://api.nasa.gov/EPIC/archive/natural/{image_date}/png/{image_name}.png?api_key={token}'
+        links.append(image_url)
+        for link_number, link in enumerate(links):
+            image = requests.get(link)
+            image.raise_for_status()
+            file_format = get_format(link)
+            with open(f'{path}/nasa_epic_photo{link_number}{file_format}', 'wb') as file:
+                file.write(image.content)
+
+
 def get_format(photo_url):
     url_split = urllib.parse.urlsplit(photo_url)
     domain_split = urllib.parse.unquote(url_split[2])
     get_file_format = os.path.splitext(domain_split)
     if get_file_format[1]:
         return get_file_format[1]
-    # return url_split
 
 
 def main():
@@ -63,9 +84,10 @@ def main():
     load_dotenv()
     nasa_url = input('Enter url: ')
     nasa_apikey = os.getenv('NASA_API_KEY')
-    get_nasa_photo(nasa_apikey, nasa_url, path)
+    # download_nasa_photo(nasa_apikey, nasa_url, path)
     # print(nasa_photo_url)
     # print(refactoring_nasa_photo(nasa_photo_url))
+    get_epic_nasa(nasa_url, nasa_apikey, path)
 
 
 if __name__ == '__main__':
