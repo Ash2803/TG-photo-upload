@@ -27,24 +27,30 @@ def fetch_spacex_last_launch(launch_id, path):
             file.write(image.content)
 
 
-def get_nasa_photo(token, nasa_url):
-    links = []
-    payload = {
+def get_nasa_photo(token, nasa_url, path):
+    param = {
         'api_key': token,
         'count': '40'
     }
-    response = requests.get(nasa_url, params=payload)
+    response = requests.get(nasa_url, params=param)
     response.raise_for_status()
-    for link in response.json():
-        links.append(link['url'])
-    return links
+    Path(path).mkdir(parents=True, exist_ok=True)
+    for url_number, url in enumerate(response.json()):
+        image = requests.get(url['url'])
+        image.raise_for_status()
+        file_format = get_format(url['url'])
+        if not file_format:
+            continue
+        with open(f'{path}/nasa_{url_number}{file_format}', 'wb') as file:
+            file.write(image.content)
 
 
-def refactoring_nasa_photo(photo_url):
+def get_format(photo_url):
     url_split = urllib.parse.urlsplit(photo_url)
     domain_split = urllib.parse.unquote(url_split[2])
     get_file_format = os.path.splitext(domain_split)
-    return get_file_format[1]
+    if get_file_format[1]:
+        return get_file_format[1]
     # return url_split
 
 
@@ -52,13 +58,13 @@ def main():
     # url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
     # file_download(path, url)
     # launch_id = input('Enter launch id: ')
-    # path = input('Enter download path: ')
+    path = input('Enter download path: ')
     # fetch_spacex_last_launch(launch_id, path)
     load_dotenv()
     nasa_url = input('Enter url: ')
     nasa_apikey = os.getenv('NASA_API_KEY')
-    nasa_photo_url = get_nasa_photo(nasa_apikey, nasa_url)
-    print(nasa_photo_url)
+    get_nasa_photo(nasa_apikey, nasa_url, path)
+    # print(nasa_photo_url)
     # print(refactoring_nasa_photo(nasa_photo_url))
 
 
