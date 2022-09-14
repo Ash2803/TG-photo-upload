@@ -5,15 +5,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-def file_download(path, url):
-    """Download files to user created directory"""
-    response = requests.get(url)
-    response.raise_for_status()
-    Path(path).mkdir(parents=True, exist_ok=True)
-    with open(f'{path}/hubble.jpeg', 'wb') as file:
-        file.write(response.content)
-
-
 def fetch_spacex_last_launch(launch_id, path):
     """Get photos of the last SpaceX rocket launch"""
     response = requests.get(f'https://api.spacexdata.com/v5/launches/{launch_id}')
@@ -21,19 +12,20 @@ def fetch_spacex_last_launch(launch_id, path):
     urls = response.json()['links']['flickr']['original']
     Path(path).mkdir(parents=True, exist_ok=True)
     for url_number, url in enumerate(urls):
+        file_format = get_format(url)
         image = requests.get(url)
         image.raise_for_status()
-        with open(f'{path}/spacex_{url_number}.jpeg', 'wb') as file:
+        with open(f'{path}/spacex_{url_number}{file_format}', 'wb') as file:
             file.write(image.content)
 
 
-def download_nasa_photo(token, nasa_url, path):
-    """Getting photo urls and downloading"""
+def download_nasa_photo(token, path):
+    """Downloading NASA photos"""
     param = {
         'api_key': token,
         'count': '40'
     }
-    response = requests.get(nasa_url, params=param)
+    response = requests.get('https://api.nasa.gov/planetary/apod', params=param)
     response.raise_for_status()
     Path(path).mkdir(parents=True, exist_ok=True)
     for url_number, url in enumerate(response.json()):
@@ -46,11 +38,12 @@ def download_nasa_photo(token, nasa_url, path):
             file.write(image.content)
 
 
-def get_epic_nasa(url, token, path):
+def get_epic_nasa(token, path):
+    """Downloading EPIC NASA photos"""
     param = {
         'api_key': token
     }
-    response = requests.get(url, params=param)
+    response = requests.get('https://api.nasa.gov/EPIC/api/natural?api_key=DEMO_KEY', params=param)
     response.raise_for_status()
     Path(path).mkdir(parents=True, exist_ok=True)
     for link_number, link in enumerate(response.json(), start=1):
@@ -73,18 +66,13 @@ def get_format(photo_url):
 
 
 def main():
-    # url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
-    # file_download(path, url)
-    # launch_id = input('Enter launch id: ')
+    launch_id = input('Enter launch id: ')
     path = input('Enter download path: ')
-    # fetch_spacex_last_launch(launch_id, path)
+    fetch_spacex_last_launch(launch_id, path)
     load_dotenv()
-    nasa_url = input('Enter url: ')
     nasa_apikey = os.getenv('NASA_API_KEY')
-    # download_nasa_photo(nasa_apikey, nasa_url, path)
-    # print(nasa_photo_url)
-    # print(refactoring_nasa_photo(nasa_photo_url))
-    get_epic_nasa(nasa_url, nasa_apikey, path)
+    download_nasa_photo(nasa_apikey, path)
+    get_epic_nasa(nasa_apikey, path)
 
 
 if __name__ == '__main__':
