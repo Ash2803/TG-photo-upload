@@ -11,7 +11,7 @@ def download_nasa_photo(token):
     """Downloading NASA photos"""
     param = {
         'api_key': token,
-        'count': '40'
+        'count': '41'
     }
     response = requests.get('https://api.nasa.gov/planetary/apod', params=param)
     response.raise_for_status()
