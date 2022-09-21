@@ -20,8 +20,8 @@ def posting_files(chat_id, tg_token, posting_time):
 
 def main():
     load_dotenv()
-    tg_token = os.getenv('TG_BOT_TOKEN')
-    chat_id = os.getenv('TG_CHAT_ID')
+    tg_token = os.environ['TG_BOT_TOKEN']
+    chat_id = os.environ['TG_CHAT_ID']
     parser = argparse.ArgumentParser(
         description='Публикует фото в телеграм бота'
     )

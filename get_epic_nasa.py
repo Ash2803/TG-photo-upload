@@ -25,7 +25,7 @@ def get_epic_nasa(token):
 
 def main():
     load_dotenv()
-    nasa_apikey = os.getenv('NASA_API_KEY')
+    nasa_apikey = os.environ['NASA_API_KEY']
     get_epic_nasa(nasa_apikey)
 
 

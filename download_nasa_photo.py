@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 import requests
 from dotenv import load_dotenv
 from images_download import fetch_images
@@ -23,7 +22,7 @@ def download_nasa_photo(token):
 
 def main():
     load_dotenv()
-    nasa_apikey = os.getenv('NASA_API_KEY')
+    nasa_apikey = os.environ['NASA_API_KEY']
     download_nasa_photo(nasa_apikey)
 
 
