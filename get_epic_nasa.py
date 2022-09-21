@@ -1,9 +1,6 @@
 import os
 import requests
-from pathlib import Path
 from dotenv import load_dotenv
-
-from get_format import get_format
 from images_download import fetch_images
 
 
@@ -12,7 +9,7 @@ def get_epic_nasa(token):
     param = {
         'api_key': token
     }
-    response = requests.get('https://api.nasa.gov/EPIC/api/natural?api_key=DEMO_KEY', params=param)
+    response = requests.get('https://api.nasa.gov/EPIC/api/natural', params=param)
     response.raise_for_status()
     urls = []
     for link_number, link in enumerate(response.json(), start=1):
