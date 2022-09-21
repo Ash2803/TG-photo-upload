@@ -12,10 +12,13 @@ def posting_files(chat_id, tg_token, posting_time):
     files = os.listdir('images')
     random.shuffle(files)
     while True:
-        for file_name in files:
-            time.sleep(int(posting_time))
-            with open(f'images/{file_name}', 'rb') as file:
-                bot.send_photo(chat_id=chat_id, photo=file)
+        try:
+            for file_name in files:
+                time.sleep(int(posting_time))
+                with open(f'images/{file_name}', 'rb') as file:
+                    bot.send_photo(chat_id=chat_id, photo=file)
+        except telegram.error.NetworkError:
+            print('Connection was lost')
 
 
 def main():
@@ -26,7 +29,7 @@ def main():
         description='Публикует фото в телеграм бота'
     )
     parser.add_argument('-t', '--posting_time', help='Кол-во времени задержки между публикациями',
-                        type=int, default=10)
+                        type=int, default=14400)
     args = parser.parse_args()
     posting_files(chat_id, tg_token, args.posting_time)
 
