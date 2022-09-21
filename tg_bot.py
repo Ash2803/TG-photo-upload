@@ -22,16 +22,14 @@ def main():
     load_dotenv()
     tg_token = os.getenv('TG_BOT_TOKEN')
     chat_id = os.getenv('TG_CHAT_ID')
-    posting_time = os.getenv('POSTING_TIME')
+    # posting_time = os.getenv('POSTING_TIME')
     parser = argparse.ArgumentParser(
         description='Публикует фото в телеграм бота'
     )
-    parser.add_argument('-t', '--posting_time', help='Кол-во времени задержки между публикациями', type=int)
+    parser.add_argument('-t', '--posting_time', help='Кол-во времени задержки между публикациями',
+                        type=int, default=10)
     args = parser.parse_args()
-    if args.posting_time:
-        posting_files(chat_id, tg_token, args.posting_time)
-    else:
-        posting_files(chat_id, tg_token, posting_time)
+    posting_files(chat_id, tg_token, args.posting_time)
 
 
 if __name__ == '__main__':
