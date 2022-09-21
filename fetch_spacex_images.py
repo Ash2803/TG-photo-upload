@@ -1,8 +1,7 @@
 import requests
 import argparse
-from pathlib import Path
 
-from get_format import get_format
+from images_download import fetch_images
 
 
 def fetch_spacex_last_launch(launch_id):
@@ -14,15 +13,10 @@ def fetch_spacex_last_launch(launch_id):
         response = requests.get('https://api.spacexdata.com/v5/launches/latest')
         response.raise_for_status()
     urls = response.json()['links']['flickr']['original']
-    if not urls:
+    if urls:
+        return fetch_images(urls)
+    else:
         print('Sorry, there are no photos from the latest launch yet!')
-    Path('images').mkdir(parents=True, exist_ok=True)
-    for url_number, url in enumerate(urls):
-        file_format = get_format(url)
-        image = requests.get(url)
-        image.raise_for_status()
-        with open(f'images/spacex_{url_number}{file_format}', 'wb') as file:
-            file.write(image.content)
 
 
 def main():

@@ -1,10 +1,8 @@
 import os
 from pathlib import Path
-
 import requests
 from dotenv import load_dotenv
-
-from get_format import get_format
+from images_download import fetch_images
 
 
 def download_nasa_photo(token):
@@ -15,15 +13,12 @@ def download_nasa_photo(token):
     }
     response = requests.get('https://api.nasa.gov/planetary/apod', params=param)
     response.raise_for_status()
-    Path('images').mkdir(parents=True, exist_ok=True)
-    for url_number, url in enumerate(response.json()):
-        image = requests.get(url['url'])
-        image.raise_for_status()
-        file_format = get_format(url['url'])
-        if not file_format:
-            continue
-        with open(f'images/nasa_{url_number}{file_format}', 'wb') as file:
-            file.write(image.content)
+    key_value = 'image'
+    images = list(filter(lambda img_key: img_key['media_type'] in key_value, response.json()))
+    urls = []
+    for url in images:
+        urls.append(url['url'])
+    fetch_images(urls)
 
 
 def main():
