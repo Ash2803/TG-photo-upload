@@ -7,7 +7,7 @@ from datetime import datetime
 
 def get_epic_nasa(token):
     """Downloading EPIC NASA photos"""
-    param = {
+    params = {
         'api_key': token
     }
     response = requests.get('https://api.nasa.gov/EPIC/api/natural', params=param)
