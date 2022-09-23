@@ -5,7 +5,7 @@ from images_download import fetch_images
 from datetime import datetime
 
 
-def get_epic_nasa(token):
+def get_epic_nasa(token, img_name):
     """Downloading EPIC NASA photos"""
     params = {
         'api_key': token
@@ -19,13 +19,13 @@ def get_epic_nasa(token):
         image_date = datetime.strftime(date_format, '%Y/%m/%d')
         image_url = f'https://api.nasa.gov/EPIC/archive/natural/{image_date}/png/{image_name}.png'
         urls.append(image_url)
-        fetch_images(urls, params)
+        fetch_images(urls, params, img_name)
 
 
 def main():
     load_dotenv()
     nasa_apikey = os.environ['NASA_API_KEY']
-    get_epic_nasa(nasa_apikey)
+    get_epic_nasa(nasa_apikey, img_name='EPIC_photo_')
 
 
 if __name__ == '__main__':

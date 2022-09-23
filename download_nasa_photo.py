@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from images_download import fetch_images
 
 
-def download_nasa_photo(token, count):
+def download_nasa_photo(token, count, img_name):
     """Downloading NASA photos"""
     params = {
         'api_key': token,
@@ -16,8 +16,7 @@ def download_nasa_photo(token, count):
     key_value = 'image'
     images = filter(lambda img_key: img_key['media_type'] in key_value, response.json())
     urls = [url['url'] for url in images]
-    print(urls)
-    fetch_images(urls, params)
+    fetch_images(urls, params, img_name)
 
 
 def main():
@@ -26,7 +25,7 @@ def main():
     parser = argparse.ArgumentParser(description='Скачивает APOD фото NASA')
     parser.add_argument('-c', '--count', help='Кол-во фото', type=int, default=10)
     args = parser.parse_args()
-    download_nasa_photo(nasa_apikey, args.count)
+    download_nasa_photo(nasa_apikey, args.count, img_name='APOD_photo_')
 
 
 if __name__ == '__main__':
