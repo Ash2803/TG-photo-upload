@@ -15,9 +15,8 @@ def download_nasa_photo(token, count):
     response.raise_for_status()
     key_value = 'image'
     images = filter(lambda img_key: img_key['media_type'] in key_value, response.json())
-    urls = []
-    for url in images:
-        urls.append(url['url'])
+    urls = [url['url'] for url in images]
+    print(urls)
     fetch_images(urls, params)
 
 
