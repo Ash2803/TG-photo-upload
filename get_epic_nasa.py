@@ -2,7 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from images_download import fetch_images
-import datetime
+from datetime import datetime
 
 
 def get_epic_nasa(token):
@@ -15,8 +15,8 @@ def get_epic_nasa(token):
     urls = []
     for link_number, link in enumerate(response.json(), start=1):
         image_name = link['image']
-        a_date = datetime.datetime.fromisoformat(link['date'])
-        image_date = f"{a_date.year}/0{a_date.month}/{a_date.day}"
+        date_format = datetime.fromisoformat(link['date'])
+        image_date = datetime.strftime(date_format, '%Y/%m/%d')
         image_url = f'https://api.nasa.gov/EPIC/archive/natural/{image_date}/png/{image_name}.png'
         urls.append(image_url)
         fetch_images(urls, params)
