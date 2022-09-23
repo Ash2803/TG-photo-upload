@@ -1,7 +1,6 @@
 import requests
 from pathlib import Path
 
-
 from get_format import get_format
 
 

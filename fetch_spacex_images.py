@@ -6,11 +6,12 @@ from images_download import fetch_images
 
 def fetch_spacex_last_launch(launch_id):
     """Get photos of the last SpaceX rocket launch"""
+    params = {}
     response = requests.get(f'https://api.spacexdata.com/v5/launches/{launch_id}')
     response.raise_for_status()
     urls = response.json()['links']['flickr']['original']
     if urls:
-        return fetch_images(urls)
+        return fetch_images(urls, params)
     else:
         print('Sorry, there are no photos from the latest launch yet!')
 
