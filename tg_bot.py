@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 def posting_files(chat_id, tg_token, posting_time):
     bot = telegram.Bot(token=tg_token)
-    files = os.listdir('images'
+    files = os.listdir('images')
     image_dir_path = Path('images')
     while True:
         random.shuffle(files)
