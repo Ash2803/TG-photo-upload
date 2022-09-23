@@ -20,7 +20,7 @@ python fetch_spacex_images.py -l [id]
 python fetch_spacex_images.py
 ```
 
-# Скачивание до 40 фото APOD-фото NASA
+# Скачивание фото APOD-фото NASA
 
 - Получить API токен <a href="https://api.nasa.gov/#signUp%D1%8F" target="_blank">тут</a>
 - Создать переменную окружения `NASA_API_KEY` и поместить в нее полученный токен
@@ -46,14 +46,13 @@ python get_epic_nasa.py
 - Получить API-токен созданного бота
 - Создайте переменные окружения для API-токена `TG_BOT_TOKEN`=5097qIOmnOoP_iDblQUY 
 и чат-ID `TG_CHAT_ID`=7555348
-- Создайте переменную окружения `POSTING_TIME` для установки времени по умолчанию
 - Запустить скрипт указав желаемый интервал публикации фото
 ```
-python get_epic_nasa.py -t время
+python tg_bot.py -t время
 ```
-- Если время не указано, то устанавливается время по умолчанию из переменной окружения `POSTING_TIME`
+- Если время не указано, то устанавливается время по умолчанию равное 4 часам
 ```
-python get_epic_nasa.py
+python tg_bot.py
 ```
 # Цель проекта
 
