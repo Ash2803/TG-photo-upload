@@ -10,17 +10,17 @@ from dotenv import load_dotenv
 
 def posting_files(chat_id, tg_token, posting_time):
     bot = telegram.Bot(token=tg_token)
-    files = os.listdir('images')
-    random.shuffle(files)
+    files = os.listdir('images'
     image_dir_path = Path('images')
     while True:
-        try:
-            for file_name in files:
+        random.shuffle(files)
+        for file_name in files:
+            try:
                 time.sleep(posting_time)
                 with open(image_dir_path / f'{file_name}', 'rb') as file:
                     bot.send_photo(chat_id=chat_id, photo=file)
-        except telegram.error.NetworkError:
-            print('Connection was lost')
+            except telegram.error.NetworkError:
+                print('Connection was lost')
 
 
 def main():
