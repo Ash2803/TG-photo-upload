@@ -14,11 +14,3 @@ def fetch_images(urls, params):
         image.raise_for_status()
         with open(image_dir_path / f'photo_{url_number}{file_format}', 'wb') as file:
             file.write(image.content)
-
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()
