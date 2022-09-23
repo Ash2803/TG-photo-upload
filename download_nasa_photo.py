@@ -14,7 +14,7 @@ def download_nasa_photo(token, count):
     response = requests.get('https://api.nasa.gov/planetary/apod', params=params)
     response.raise_for_status()
     key_value = 'image'
-    images = list(filter(lambda img_key: img_key['media_type'] in key_value, response.json()))
+    images = filter(lambda img_key: img_key['media_type'] in key_value, response.json())
     urls = []
     for url in images:
         urls.append(url['url'])

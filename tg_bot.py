@@ -14,7 +14,7 @@ def posting_files(chat_id, tg_token, posting_time):
     while True:
         try:
             for file_name in files:
-                time.sleep(int(posting_time))
+                time.sleep(posting_time)
                 with open(f'images/{file_name}', 'rb') as file:
                     bot.send_photo(chat_id=chat_id, photo=file)
         except telegram.error.NetworkError:
