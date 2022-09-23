@@ -24,7 +24,11 @@ python fetch_spacex_images.py
 
 - Получить API токен <a href="https://api.nasa.gov/#signUp%D1%8F" target="_blank">тут</a>
 - Создать переменную окружения `NASA_API_KEY` и поместить в нее полученный токен
-- Запустить скрипт
+- Запустить скрипт, указав желаемое кол-во фото для скачивания
+```
+python download_nasa_photo.py -c 20
+```
+- Если кол-во не указано, то устанавливается кол-во по умолчанию равное 10
 ```
 python download_nasa_photo.py
 ```
