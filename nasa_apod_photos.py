@@ -2,7 +2,7 @@ import argparse
 import os
 import requests
 from dotenv import load_dotenv
-from images_download import fetch_images
+from download_photos import fetch_images
 
 
 def download_nasa_photo(token, count, img_name):

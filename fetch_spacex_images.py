@@ -1,7 +1,7 @@
 import requests
 import argparse
 
-from images_download import fetch_images
+from download_photos import fetch_images
 
 
 def fetch_spacex_last_launch(launch_id, img_name):
