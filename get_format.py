@@ -8,11 +8,3 @@ def get_format(photo_url):
     file_format = os.path.splitext(splitted_domain)
     if file_format[1]:
         return file_format[1]
-
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()
