@@ -16,11 +16,12 @@ def posting_files(chat_id, tg_token, posting_time):
         random.shuffle(files)
         for file_name in files:
             try:
-                time.sleep(posting_time)
                 with open(image_dir_path / f'{file_name}', 'rb') as file:
                     bot.send_photo(chat_id=chat_id, photo=file)
+                    time.sleep(posting_time)
             except telegram.error.NetworkError:
                 print('Connection was lost')
+                time.sleep(10)
 
 
 def main():
